@@ -1,5 +1,5 @@
 # Netshoot-OVA
-This is a template to have the great Netshoot project by Nicolaka (https://github.com/nicolaka/netshoot) in an OVA format. It is very useful for those situations when you require a light and fast to deploy VM to troubleshoot a network environment, but don't want to install a full VM. Currently, the OVA is under 600MB.
+This is a template to have the great Netshoot project by Nicolaka (https://github.com/nicolaka/netshoot) in an OVA format. It is very useful for those situations when you require a light and fast to deploy VM to troubleshoot a faulty network or VM environment, but don't want to install a full VM. Currently, the OVA is under 600MB.
 
 The OVA is based around Alpine Linux 3.12 and can be built using [Packer](https://www.packer.io).
 
