@@ -1,0 +1,72 @@
+{
+  "description": "Build base Netshoot-OVA",
+  "variables": {
+    "vm_name": "netshoot",
+    "cpus": "2",
+    "memory": "1024",
+    "disk_size": "5120",
+    "iso_local_url": "../../iso/alpine-virt-3.12.0-x86_64.iso",
+    "iso_download_url": "http://dl-cdn.alpinelinux.org/alpine/v3.12/releases/x86_64/alpine-standard-3.12.0-x86_64.iso",
+    "iso_checksum": "746a7af837fcb3451b7587e881d6706269cf4f300f7cf37964e200e50a52c93c",
+    "root_password": "VMware1!",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant"
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": "mkdir .ssh; cd .ssh; echo ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key > authorized_keys; echo vagrant insecure ssh key added!"
+    }
+  ],
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "headless": false,
+      "vm_name": "{{user `vm_name`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "iso_urls": [
+        "{{user `iso_local_url`}}",
+        "{{user `iso_download_url`}}"
+      ],
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "http_directory": "http",
+      "communicator": "ssh",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_wait_timeout": "10m",
+      "shutdown_command": "echo {{user `ssh_password`}} | sudo -S /sbin/poweroff",
+      "boot_wait": "30s",
+      "boot_command": [
+        "root<enter><wait>",
+        "ifconfig eth0 up && udhcpc -i eth0<enter><wait10>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers<enter><wait>",
+        "setup-alpine -f $PWD/answers<enter><wait5>",
+        "{{user `root_password`}}<enter><wait>",
+        "{{user `root_password`}}<enter><wait>",
+        "<wait20>y<enter>",
+        "<wait10><wait10><wait4m>",
+        "reboot<enter>",
+        "<wait10><wait10><wait2m>",
+        "root<enter><wait5>",
+        "{{user `root_password`}}<enter><wait5>",
+        "echo http://dl-cdn.alpinelinux.org/alpine/v3.12/community >> /etc/apk/repositories<enter>",
+        "apk add sudo<enter><wait5>",
+        "echo 'Defaults env_keep += \"http_proxy https_proxy\"' > /etc/sudoers.d/wheel<enter>",
+        "echo '%wheel ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/wheel<enter>",
+        "adduser {{user `ssh_username`}}<enter><wait5>",
+        "{{user `ssh_password`}}<enter><wait>",
+        "{{user `ssh_password`}}<enter><wait>",
+        "adduser {{user `ssh_username`}} wheel<enter><wait5>",
+        "apk add open-vm-tools<enter><wait5>",
+        "echo PermitRootLogin yes >> /etc/ssh/sshd_config<enter><wait2>",
+        "rc-update add open-vm-tools<enter><wait5>",
+        "wget -O /etc/motd http://{{ .HTTPIP }}:{{ .HTTPPort }}/motd <enter><wait5>",
+        "apk add bash<enter><wait5>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/packages.sh<enter><wait>",
+        "bash -l $PWD/packages.sh<enter><wait>",
+	      "cat /dev/null > ~/.ash_history<enter><wait>",
+        "<wait4m>"
+      ]
+    }
+  ]
+}
