@@ -3,6 +3,7 @@ This is a template to have the great Netshoot project by Nicolaka (https://githu
 
 The OVA is based around Alpine Linux 3.12 and can be built using [Packer](https://www.packer.io).  This Packer template will build a OVA using VirtualBox or VMware Workstation/Fusion/Player from an Alpine ISO image. Networking is configured for DHCP and an SSH user is created (default `vagrant` password `vagrant`) with sudo privileges. The default `root` password is `VMware1!`
 
+
 To build it using VirtualBox, use the following command
 
     packer build netshoot-ova-virtualbox.json
@@ -11,6 +12,9 @@ To build it using VMware, use the following command
 
     packer build netshoot-ova-vmware.json
     
+*Please note that the VMware-ISO builder does not allow OVF/OVA exporting from VMware Workstation/Fusion/Player. You'll have to export the VM manually after Packer has finished.
+    
+
 You can customize the login username and password with:
 
     packer build -var=ssh_username=youruser -var=ssh_password=yourpassword
