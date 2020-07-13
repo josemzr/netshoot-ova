@@ -12,7 +12,7 @@ To build it using VMware, use the following command
 
     packer build netshoot-ova-vmware.json
     
-*Please note that the VMware-ISO builder does not allow OVF/OVA exporting from VMware Workstation/Fusion/Player. You'll have to export the VM manually after Packer has finished.
+*Please note that the VMware-ISO builder does not allow OVF/OVA exporting from VMware Workstation/Fusion/Player. You'll have to export the VM manually after Packer has finished.*
     
 
 You can customize the login username and password with:
