@@ -1,13 +1,17 @@
 # Netshoot-OVA
 This is a template to have the great Netshoot project by Nicolaka (https://github.com/nicolaka/netshoot) in an OVA format. It is very useful for those situations when you require a light and fast to deploy VM to troubleshoot a faulty network or VM environment, but don't want to install a full VM. Currently, the OVA is under 600MB.
 
-The OVA is based around Alpine Linux 3.12 and can be built using [Packer](https://www.packer.io).
+The OVA is based around Alpine Linux 3.12 and can be built using [Packer](https://www.packer.io).  This Packer template will build a OVA using VirtualBox or VMware Workstation/Fusion/Player from an Alpine ISO image. Networking is configured for DHCP and an SSH user is created (default `vagrant` password `vagrant`) with sudo privileges. The default `root` password is `VMware1!`
 
-    packer build netshoot-ova.json
+To build it using VirtualBox, use the following command
 
-This Packer template will build a OVA using VirtualBox from an Alpine ISO image. Networking is configured for DHCP and an SSH user is created (default `vagrant` password `vagrant`) with sudo privileges. The default `root` password is `VMware1!`
+    packer build netshoot-ova-virtualbox.json
 
-You can customize this login
+To build it using VMware, use the following command
+
+    packer build netshoot-ova-vmware.json
+    
+You can customize the login username and password with:
 
     packer build -var=ssh_username=youruser -var=ssh_password=yourpassword
 
