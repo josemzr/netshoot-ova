@@ -1,3 +1,6 @@
+# This repository is now archived and it has been superseded by Netshoot Virtual Appliance, a newer and better OVA based around Debian (https://github.com/josemzr/netshoot-virtual-appliance)
+
+
 # Netshoot-OVA
 This is a template to have the great Netshoot project by Nicolaka (https://github.com/nicolaka/netshoot) in an OVA format. It is very useful for those situations when you require a light and fast to deploy VM to troubleshoot a faulty network or VM environment, but don't want to install a full VM. Currently, the OVA is under 600MB.
 
